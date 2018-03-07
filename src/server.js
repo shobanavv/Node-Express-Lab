@@ -98,17 +98,37 @@ server.put('/posts', (req,res) => {
      return obj;
     });
     if(idEqual) {
-        console.log("idEqual true")
+        console.log("idEqual true");
         res.json(req.body);   //res.send({newPost});
     } else {
         res.send({error: 'Id not match'});
     }
 });
 
-server.delete("/posts",(req, res) => {
-    const newPost = res.body;
+server.delete('/posts',(req, res) => {
+    const newPost = req.body;
+    if(!newPost.id) {
+        res.status(400);
+        res.send({error: "Bad Request"});
+        return;
+    }   
+        let idEqual = false;
+        posts = posts.filter(obj => {
+           if (obj.id !== Number(newPost.id)) {
+            return obj;
+        }
+            idEqual = true;
+        });
+        if(idEqual) {
+            res.json({Sucess: "true"});
+            
+        } else {
+            res.send({error: "id don't match"});
+        }
+        
+            
     
-})
+});
 
 
 
